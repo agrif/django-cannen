@@ -2,7 +2,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.template import RequestContext
 
 from django.conf import settings
@@ -42,6 +42,8 @@ def delete(request, songid):
 @login_required
 def add_url(request):
     url = request.POST['url']
+    if url == '':
+        raise ValidationError("url must not be empty")
     UserSong(owner=request.user, url=url).save()
     return HttpResponseRedirect(reverse('cannen.views.index'))
 
