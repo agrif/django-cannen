@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.template import RequestContext
+from urllib import unquote
 
 from django.conf import settings
 CANNEN_BACKEND = settings.CANNEN_BACKEND
@@ -51,7 +52,7 @@ def add_url(request):
 def add_file(request):
     newfile = SongFile(owner=request.user, file=request.FILES['file'])
     newfile.save()
-    newsong = UserSong(owner=newfile.owner, url=newfile.file.url, file=newfile)
+    newsong = UserSong(owner=newfile.owner, url=unquote(newfile.file.url), file=newfile)
     newsong.save()
     CANNEN_BACKEND.register_uploaded(newsong.url)
     return HttpResponseRedirect(reverse('cannen.views.index'))

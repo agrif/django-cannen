@@ -98,7 +98,7 @@ class MPDBackend(CannenBackend):
         self.last_song = None
     def queue(self, url):
         try:
-            self.client.add(url)
+            self.client.add(url.encode('UTF-8'))
             return True
         except mpd.CommandError:
             return False
@@ -174,7 +174,7 @@ class MPDBackend(CannenBackend):
         if current and current['file'] == model.url:
             modeldat = current
         try:
-            modeldat = self.client.listallinfo(model.url)[0]
+            modeldat = self.client.listallinfo(model.url.encode('UTF-8'))[0]
         except (mpd.CommandError, IndexError):
             pass
         
