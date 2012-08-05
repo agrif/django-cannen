@@ -7,7 +7,7 @@ from django.template import RequestContext
 from urllib import unquote
 
 import backend
-from models import UserSong, GlobalSong, SongFile
+from .models import UserSong, GlobalSong, SongFile
 
 @login_required
 def index(request):
