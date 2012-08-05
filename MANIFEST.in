@@ -1,1 +1,3 @@
+include README.md
+include COPYING
 recursive-include cannen/templates *.html
