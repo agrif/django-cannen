@@ -11,6 +11,14 @@ as fair as possible.
   [Django]: https://www.djangoproject.com/
   [MPD]: http://mpd.wikia.com/wiki/Music_Player_Daemon_Wiki
 
+Requirements
+------------
+ * Python
+ * Django
+ * MPD
+ * python-mpd
+ * Icecast (only required if you want to stream your radio station)
+
 Installation
 ------------
 
