@@ -28,6 +28,8 @@ class MPDBackend(CannenBackend):
         self.client.connect(host=hostname, port=port)
         self.last_song = None
         self.music_root = music_root
+    def __del__(self):
+        self.client.disconnect()
     def play(self):
         self.client.play()
     def stop(self):
