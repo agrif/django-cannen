@@ -54,3 +54,5 @@ class CannenBackend(object):
     # called with uploaded file urls
     def register_uploaded(self, url):
         raise NotImplementedError("CannenBackend.register_uploaded")
+    def unregister_uploaded(self, url):
+        raise NotImplementedError("CannenBackend.unregister_uploaded")

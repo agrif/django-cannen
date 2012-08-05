@@ -44,4 +44,5 @@ class DebugBackend(CannenBackend):
         return FileSystemStorage()
     def register_uploaded(self, url):
         pass
-
+    def unregister_uploaded(self, url):
+        pass

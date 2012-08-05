@@ -49,10 +49,8 @@ def add_url(request):
 
 @login_required
 def add_file(request):
-    CANNEN_BACKEND = backend.get()
     newfile = SongFile(owner=request.user, file=request.FILES['file'])
     newfile.save()
     newsong = UserSong(owner=newfile.owner, url=unquote(newfile.file.url), file=newfile)
     newsong.save()
-    CANNEN_BACKEND.register_uploaded(newsong.url)
     return HttpResponseRedirect(reverse('cannen.views.index'))

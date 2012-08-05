@@ -115,3 +115,5 @@ class MPDBackend(CannenBackend):
         return FileSystemStorage(location=self.music_root, base_url="")
     def register_uploaded(self, url):
         self.client.update(url)
+    def unregister_uploaded(self, url):
+        self.client.update(url)
