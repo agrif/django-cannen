@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from cannen.models import UserSong, GlobalSong, User
+import cannen.backend
 
 class PlaylistManager(object):
     def __init__(self, out, backend):
@@ -61,7 +62,7 @@ class PlaylistManager(object):
 
 def main(out):
     import settings
-    backend = settings.CANNEN_BACKEND
+    backend = cannen.backend.get()
     backend.stop()
     
     manager = PlaylistManager(out, backend)

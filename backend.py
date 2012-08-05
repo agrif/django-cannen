@@ -1,5 +1,27 @@
+from django.core.exceptions import ImproperlyConfigured
+from django.conf import settings
+CANNEN_BACKEND = settings.CANNEN_BACKEND
+
 from select import select
 import mpd
+
+def get():
+    if type(CANNEN_BACKEND) == tuple:
+        path = CANNEN_BACKEND[0]
+        options = CANNEN_BACKEND[1:]
+    else:
+        path = CANNEN_BACKEND
+        options = ()
+    try:
+        module, name = path.rsplit('.', 1)
+        parts = path.split('.')
+        module = __import__(module)
+        cls = module
+        for part in parts[1:]:
+            cls = getattr(cls, part)
+    except (AttributeError, ImportError, ValueError):
+        raise ImproperlyConfigured("invalid cannen backend {0}".format(repr(CANNEN_BACKEND)))
+    return cls(*options)
 
 class SongInfo(object):
     def __init__(self, model, title, artist, album):

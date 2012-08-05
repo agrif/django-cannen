@@ -1,13 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-from django.conf import settings
-CANNEN_BACKEND = settings.CANNEN_BACKEND
+import backend
 
 # model for files uploaded
 class SongFile(models.Model):
     owner = models.ForeignKey(User)
-    file = models.FileField(upload_to="uploaded/", storage=CANNEN_BACKEND.get_storage())
+    file = models.FileField(upload_to="uploaded/", storage=backend.get().get_storage())
 
 # for user-local queues
 class UserSong(models.Model):

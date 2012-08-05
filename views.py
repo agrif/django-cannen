@@ -6,9 +6,7 @@ from django.core.exceptions import PermissionDenied, ValidationError
 from django.template import RequestContext
 from urllib import unquote
 
-from django.conf import settings
-CANNEN_BACKEND = settings.CANNEN_BACKEND
-
+import backend
 from models import UserSong, GlobalSong, SongFile
 
 @login_required
@@ -18,6 +16,7 @@ def index(request):
 
 @login_required
 def info(request):
+    CANNEN_BACKEND = backend.get()
     try:
         now_playing = GlobalSong.objects.filter(is_playing=True)[0]
         now_playing = CANNEN_BACKEND.get_info(now_playing)
@@ -50,6 +49,7 @@ def add_url(request):
 
 @login_required
 def add_file(request):
+    CANNEN_BACKEND = backend.get()
     newfile = SongFile(owner=request.user, file=request.FILES['file'])
     newfile.save()
     newsong = UserSong(owner=newfile.owner, url=unquote(newfile.file.url), file=newfile)
