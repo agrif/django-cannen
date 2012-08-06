@@ -16,7 +16,7 @@ Requirements
  * Python
  * Django
  * MPD
- * python-mpd
+ * python-mpd (>= 0.3.0)
  * Icecast (only required if you want to stream your radio station)
 
 Installation
