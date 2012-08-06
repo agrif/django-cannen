@@ -51,6 +51,9 @@ class UserSong(models.Model):
     url = models.CharField(max_length=200)
     file = models.ForeignKey(SongFile, null=True, blank=True)
     
+    class Meta:
+        ordering = ['pk']
+    
     def __unicode__(self):
         return self.url.rsplit('/')[-1]
 
@@ -66,6 +69,9 @@ class GlobalSong(models.Model):
     url = models.CharField(max_length=200)
     file = models.ForeignKey(SongFile, null=True, blank=True)
     is_playing = models.BooleanField()
+    
+    class Meta:
+        ordering = ['pk']
     
     def __unicode__(self):
         return self.url.rsplit('/')[-1]
