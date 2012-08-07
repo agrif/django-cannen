@@ -125,9 +125,10 @@ class MPDBackend(CannenBackend):
             title = modeldat.get('title')
             artist = modeldat.get('artist')
             album = modeldat.get('album')
-            return SongInfo(model, title, artist, album)
+            time = "%02d:%02d" % divmod(int(modeldat.get('time')),60)
+            return SongInfo(model, title, artist, album, time)
         else:
-            return SongInfo(model, None, None, None)
+            return SongInfo(model, None, None, None, None)
     def get_storage(self):
         return FileSystemStorage(location=self.music_root, base_url="")
     def register_uploaded(self, url):

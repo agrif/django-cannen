@@ -11,6 +11,11 @@ by {{ current.artist }}
 <div class="suggested">
 submitted by <strong>{{ current.model.submitter.username }}</strong>
 </div>
+{% if current.time %}
+<div class="suggested">
+time: {{ current.time }}
+</div>
+{% endif %}
 {% else %}
 <div class="title">
 nothing is playing
