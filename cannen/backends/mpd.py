@@ -23,9 +23,11 @@ from select import select
 import mpd
 
 class MPDBackend(CannenBackend):
-    def __init__(self, hostname, port, music_root):
+    def __init__(self, hostname, port, music_root, password):
         self.client = mpd.MPDClient()
         self.client.connect(host=hostname, port=port)
+        if password:
+            self.client.password(password)
         self.last_song = None
         self.music_root = music_root
     def __del__(self):
@@ -49,25 +51,25 @@ class MPDBackend(CannenBackend):
         # keep track of our idle state and accumulated changes
         in_idle = False
         changed = []
-        
+
         while True:
             # make sure to be in idle mode
             if not in_idle:
                 self.client.send_idle()
                 in_idle = True
-            
+
             # check for events, but time out for checking database updates
             ready, _, _ = select([self.client], [], [], 1)
-            
+
             # handle events
             if ready:
                 changed += self.client.fetch_idle()
                 self.client.send_idle()
-                
+
                 # reset our accumulated events here, unless it has player
                 if not 'player' in changed:
                     changed = []
-            
+
             # if we get a player event... update our state to reflect it
             if 'player' in changed:
                 changed = []
@@ -75,22 +77,22 @@ class MPDBackend(CannenBackend):
                 self.client.send_noidle()
                 changed += self.client.fetch_idle()
                 in_idle = False
-                
+
                 # get the current song, check against stored state
                 # also get play state
                 current_song = self.client.currentsong()
                 playstate = self.client.status()['state']
-                
+
                 if not current_song or playstate == 'stop':
                     # playstate == 'stop' happens when the last queued
                     # song can't be played for some reason
                     if playstate == 'stop' and current_song:
                         self.client.deleteid(current_song['id'])
-                    
+
                     current_song_key = None
                 else:
                     current_song_key = current_song['id']
-                
+
                 # if it changed...
                 if current_song_key != self.last_song:
                     # update our state, call on_next_song
@@ -101,7 +103,7 @@ class MPDBackend(CannenBackend):
                         on_next_song(None)
                     # avoid double-calling on_next_song(None)
                     continue
-            
+
             # if we're not playing anything...
             if self.last_song == None:
                 # turn of idle, if needed
@@ -120,7 +122,7 @@ class MPDBackend(CannenBackend):
             modeldat = self.client.listallinfo(model.url.encode('UTF-8'))[0]
         except (mpd.CommandError, IndexError):
             pass
-        
+
         if modeldat:
             title = modeldat.get('title')
             artist = modeldat.get('artist')
