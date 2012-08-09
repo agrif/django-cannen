@@ -44,12 +44,16 @@ site. Copy the `cannen` directory into your site directory, and add
 there, add the following line:
 
 ~~~~{.py}
-CANNEN_BACKEND = ('cannen.backends.mpd.MPDBackend', 'localhost', 6600, '/path/to/mpd/music', 'password')
+CANNEN_BACKEND = ('cannen.backends.mpd.MPDBackend', 'localhost', 6600, '/path/to/mpd/music')
 ~~~~
 
-Replace the last 4 parts with your MPD host, port, the path to the
-MPD music directory and your password. If you have no password set, just
-add None without the ''
+Replace the last 3 parts with your MPD host, port, and the path to the
+MPD music directory. If you have an MPD password, add it at the end
+like so:
+
+~~~~{.py}
+CANNEN_BACKEND = ('cannen.backends.mpd.MPDBackend', 'localhost', 6600, '/path/to/mpd/music', 'password')
+~~~~
 
 Finally, you need to add Cannen to your URL router. You can do this by
 adding the following line to your `urlpatterns` in `urls.py`:

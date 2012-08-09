@@ -23,7 +23,7 @@ from select import select
 import mpd
 
 class MPDBackend(CannenBackend):
-    def __init__(self, hostname, port, music_root, password):
+    def __init__(self, hostname, port, music_root, password=None):
         self.client = mpd.MPDClient()
         self.client.connect(host=hostname, port=port)
         if password:
