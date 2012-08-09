@@ -17,7 +17,11 @@ Requirements
  * Django
  * MPD
  * python-mpd (>= 0.3.0)
- * Icecast (only required if you want to stream your radio station)
+ 
+### Optional
+
+ * Icecast (for streaming your radio station)
+ * pyftpdlib (>= 0.7.0, for the FTP uploade server)
 
 Installation
 ------------
@@ -72,6 +76,19 @@ Cannen needs a secondary process to run in the background to manage
 the playlist, apart from the main Django process that serves the
 website. In order to run this process, run
 `python ./manage.py runcannen` inside your site directory.
+
+### Running the FTP Upload Server
+
+Cannen has an FTP server that you can run in the background to allow
+your users to easily upload a lot of songs at once. This server
+requires pyftpdlib version 0.7.0 or later, and it also requires that
+your Django authentication backend supports password-based
+logins. This means that the FTP server will *not* work for OAuth-based
+backends, however, some OAuth backends also allow each user to have a
+local password.
+
+To run the FTP upload server, run `python ./manage.py runcannenftp`
+inside your site directory.
 
 ### Extra Considerations
 

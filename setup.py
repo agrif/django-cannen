@@ -29,4 +29,5 @@ setup(name='django-cannen',
       include_package_data=True,
       zip_safe=False,
       
-      install_requires=['python-mpd>=0.3.0'])
+      install_requires=['python-mpd>=0.3.0'],
+      extras_require={'FTP': ['pyftpdlib>=0.7.0']})
