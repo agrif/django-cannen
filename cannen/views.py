@@ -19,10 +19,9 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.template import RequestContext
-from urllib import unquote
 
 import backend
-from .models import UserSong, GlobalSong, SongFile
+from .models import UserSong, GlobalSong, SongFile, add_song_and_file
 
 @login_required
 def index(request):
@@ -66,8 +65,5 @@ def add_url(request):
 def add_file(request):
     if request.POST.get and 'file' in request.POST and request.POST['file'] == '':
         return HttpResponseRedirect(reverse('cannen.views.index'))
-    newfile = SongFile(owner=request.user, file=request.FILES['file'])
-    newfile.save()
-    newsong = UserSong(owner=newfile.owner, url=unquote(newfile.file.url), file=newfile)
-    newsong.save()
+    add_song_and_file(request.user, request.FILES['file'])
     return HttpResponseRedirect(reverse('cannen.views.index'))

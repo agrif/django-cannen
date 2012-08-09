@@ -21,10 +21,12 @@ from urllib import unquote
 
 import backend
 
+UPLOAD_TO = "uploaded/"
+
 # model for files uploaded
 class SongFile(models.Model):
     owner = models.ForeignKey(User)
-    file = models.FileField(upload_to="uploaded/", storage=backend.get().get_storage())
+    file = models.FileField(upload_to=UPLOAD_TO, storage=backend.get().get_storage())
     
     def garbage_collect(self):
         if self.globalsong_set.count() > 0 or self.usersong_set.count() > 0:
@@ -62,6 +64,13 @@ def user_song_delete(sender, **kwargs):
     instance = kwargs['instance']
     if instance.file:
         instance.file.garbage_collect()
+
+def add_song_and_file(user, file):
+    newfile = SongFile(owner=user, file=file)
+    newfile.save()
+    newsong = UserSong(owner=newfile.owner, url=unquote(newfile.file.url), file=newfile)
+    newsong.save()
+    return (newsong, newfile)
 
 # for the global queue
 class GlobalSong(models.Model):
