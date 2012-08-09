@@ -21,7 +21,7 @@ Requirements
 ### Optional
 
  * Icecast (for streaming your radio station)
- * pyftpdlib (>= 0.7.0, for the FTP uploade server)
+ * pyftpdlib (>= 0.7.0, for the FTP upload server)
 
 Installation
 ------------
