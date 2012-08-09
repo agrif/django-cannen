@@ -95,8 +95,6 @@ class CannenFilesystem(ftpserver.AbstractedFS):
     # a bunch of useless things from os.*
     def mkdir(self, path):
         raise NotPermittedError()
-    def chdir(self, path):
-        raise NotPermittedError()
     def rmdir(self, path):
         raise NotPermittedError()
     def rename(self, src, dest):
@@ -112,6 +110,9 @@ class CannenFilesystem(ftpserver.AbstractedFS):
             raise NotPermittedError()
         files = UserSong.objects.exclude(file=None).filter(owner__id=self.user.id)
         return [f.url.rsplit('/', 1)[1].encode("UTF-8") for f in files]
+    def chdir(self, path):
+        if path != '/':
+            raise NotPermittedError()
     def remove(self, path):
         model = self.get_model(path)
         if model:
@@ -163,12 +164,13 @@ class CannenAuthorizer(ftpserver.DummyAuthorizer):
             return False
         try:
             # add auth perms
+            # e - change directory
             # l - list files
             # r - retrieve files
             # d - delete files
             # w - store files
-            self.add_user(username, 'notthepassword', '.', perm='lrdw')
-        except ftpserver.AuthorizerError:
+            self.add_user(username, 'notthepassword', '.', perm='elrdw')
+        except (ftpserver.AuthorizerError, ValueError):
             pass
         return True
 
