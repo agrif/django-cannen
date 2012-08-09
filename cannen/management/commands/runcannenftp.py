@@ -50,8 +50,8 @@ def NotPermittedError(io=False):
 
 class CannenFilesystem(ftpserver.AbstractedFS):
     def __init__(self, root, cmd_channel):
-        self.user = User.objects.all()[0]
         super(CannenFilesystem, self).__init__('/', cmd_channel)
+        self.user = User.objects.get(username=cmd_channel.username)
     
     # all paths are the same
     def ftp2fs(self, ftppath):
