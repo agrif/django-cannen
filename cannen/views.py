@@ -64,6 +64,8 @@ def add_url(request):
 
 @login_required
 def add_file(request):
+    if request.POST.get and 'file' in request.POST and request.POST['file'] == '':
+        return HttpResponseRedirect(reverse('cannen.views.index'))
     newfile = SongFile(owner=request.user, file=request.FILES['file'])
     newfile.save()
     newsong = UserSong(owner=newfile.owner, url=unquote(newfile.file.url), file=newfile)
