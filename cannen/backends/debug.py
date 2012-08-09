@@ -13,12 +13,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import sys
 from ..backend import CannenBackend, SongInfo
 from django.core.files.storage import FileSystemStorage
 
 class DebugBackend(CannenBackend):
-    def __init__(self, out, delay):
-        self.out = out
+    def __init__(self, delay = 5):
+        self.out = sys.stdout
         self.delay = delay
         self.is_playing = False
         self.current = None
