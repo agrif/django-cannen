@@ -36,7 +36,7 @@ def get():
     return cls(*options)
 
 class SongInfo(object):
-    def __init__(self, model, title, artist, album, time, elapsed):
+    def __init__(self, model, title=None, artist=None, album=None, time=None, elapsed=None):
         self.title = title
         self.artist = artist
         self.album = album

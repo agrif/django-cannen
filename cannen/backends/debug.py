@@ -55,7 +55,7 @@ class DebugBackend(CannenBackend):
                 on_next_song(None)
             time.sleep(self.delay)
     def get_info(self, model):
-        return SongInfo(model, None, None, None, None)
+        return SongInfo(model)
     def get_storage(self):
         return FileSystemStorage()
     def register_uploaded(self, url):
