@@ -117,6 +117,7 @@ class MPDBackend(CannenBackend):
     def get_info(self, model):
         modeldat = None
         current = self.client.currentsong()
+        current_status = self.client.status()
         if current and current['file'] == model.url:
             modeldat = current
         try:
@@ -128,11 +129,14 @@ class MPDBackend(CannenBackend):
             title = modeldat.get('title')
             artist = modeldat.get('artist')
             album = modeldat.get('album')
-            elapsed = "%02d:%02d" % divmod(int(Decimal(self.client.status()['elapsed'])),60)
             if 'time' in modeldat:
 			    time = "%02d:%02d" % divmod(int(modeldat.get('time')),60)
             else:
                 time = None
+            if 'elapsed' in current_status:
+                elapsed = "%02d:%02d" % divmod(int(Decimal(current_status['elapsed'])),60)
+            else:
+                elapsed = None
             return SongInfo(model, title, artist, album, time, elapsed)
         else:
             return SongInfo(model, None, None, None, None, None)
