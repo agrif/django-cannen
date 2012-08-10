@@ -20,6 +20,7 @@ from ..backend import CannenBackend, SongInfo
 from django.core.files.storage import FileSystemStorage
 
 from select import select
+from decimal import Decimal
 import mpd
 
 class MPDBackend(CannenBackend):
@@ -127,13 +128,14 @@ class MPDBackend(CannenBackend):
             title = modeldat.get('title')
             artist = modeldat.get('artist')
             album = modeldat.get('album')
+            elapsed = "%02d:%02d" % divmod(int(Decimal(self.client.status()['elapsed'])),60)
             if 'time' in modeldat:
 			    time = "%02d:%02d" % divmod(int(modeldat.get('time')),60)
             else:
                 time = None
-            return SongInfo(model, title, artist, album, time)
+            return SongInfo(model, title, artist, album, time, elapsed)
         else:
-            return SongInfo(model, None, None, None, None)
+            return SongInfo(model, None, None, None, None, None)
     def get_storage(self):
         return FileSystemStorage(location=self.music_root, base_url="")
     def register_uploaded(self, url):
