@@ -1,3 +1,4 @@
+{% load url from future %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -34,14 +35,14 @@
 
 	<div id="add">
 	  <h2>Upload File</h2>
-	  <form id="fileupload" action="{% url cannen.views.add_file %}" method="post" enctype="multipart/form-data">
+	  <form id="fileupload" action="{% url 'cannen.views.add_file' %}" method="post" enctype="multipart/form-data">
 		{% csrf_token %}
 		<input type="file" name="file" placeholder="Local File..."/>
 		<input id="fileuploadsubmit" type="submit" value="Add"/>
 	  </form>
 
 	  <h2>Add URL</h2>
-	  <form action="{% url cannen.views.add_url %}" method="post" class="asyncform">
+	  <form action="{% url 'cannen.views.add_url' %}" method="post" class="asyncform">
 		{% csrf_token %}
 		<input type="text" name="url" placeholder="URL..."/>
 		<input type="submit" value="Add"/>

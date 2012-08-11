@@ -1,3 +1,4 @@
+{% load url from future %}
 <div id="current">
   {% if current %}
   <div class="title">
@@ -47,7 +48,7 @@
   {% if queue %}
   <ul>
 	{% for song in queue %}
-	<li><span class="context"><a href="{% url cannen.views.delete song.model.id %}" class="asynclink">X</a></span> <span class="title">{{ song.title }}</span>{% if song.artist %} <span class="subtitle">by {{ song.artist }}</span>{% endif %}</li>
+	<li><span class="context"><a href="{% url 'cannen.views.delete' song.model.id %}" class="asynclink">X</a></span> <span class="title">{{ song.title }}</span>{% if song.artist %} <span class="subtitle">by {{ song.artist }}</span>{% endif %}</li>
 	{% endfor %}
   </ul>
   {% else %}
