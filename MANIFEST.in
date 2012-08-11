@@ -1,7 +1,7 @@
 include README.md
 include COPYING
 recursive-include cannen/templates *.html
+recursive-include cannen/static *.css *.js
 recursive-include demo/ *.py
 recursive-include demo/templates *.html
 include demo/media/.keep
-

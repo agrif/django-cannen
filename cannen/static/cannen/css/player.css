@@ -1,0 +1,86 @@
+body
+{
+	font-family: Helvetica,Arial,sans-serif;
+	background-color: #fff;
+	color: #000;
+}
+
+h1
+{
+	font-size: 0.8em;
+	color: #ccc;
+	font-weight: normal;
+}
+
+#current
+{
+	margin: 15px;
+	font-size: 2.0em;
+}
+
+.title
+{
+	font-size: 1.5em;
+	font-weight: bold;
+}
+
+.subtitle
+{
+	font-style: italic;
+}
+
+.time, .suggested
+{
+	font-size: 0.7em;
+	padding-top: 0.3em;
+}
+
+#playlist, #queue
+{
+	width: 35%;
+	margin-top: 2em;
+	border-left: 2px solid #aaa;
+}
+
+#add, #playlist, #queue
+{
+	color: #666;
+	font-size: 0.8em;
+	margin-left: 5%;
+	margin-right: 5%;
+	padding-left: 1.5em;
+}
+
+#playlist
+{
+	float: left;
+}
+
+#queue
+{
+	float: right;
+}
+
+#playlist > h2, #queue > h2
+{
+	font-size: 1.0em;
+}
+
+#playlist > ul, #queue > ul
+{
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+#add
+{
+	clear: both;
+	margin-top: 10em;
+}
+
+.context > :link
+{
+	color: #bbb;
+	text-decoration: none;
+}

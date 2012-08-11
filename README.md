@@ -83,7 +83,8 @@ adding the following line to your `urlpatterns` in `urls.py`:
 
 This will put Cannen at the URL `http://yourdomain.com/radio/`. Feel
 free to put it wherever you want it. Finally, remember to run
-`python manage.py syncdb` to install the Cannen tables.
+`python manage.py syncdb` to install the Cannen tables, and if needed,
+`python manage.py collectstatic` to install Cannen's static files.
 
 ### Running the Playlist Manager
 
