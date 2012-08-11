@@ -15,6 +15,7 @@
 
 from django.core.exceptions import ImproperlyConfigured
 from django.conf import settings
+from urllib import unquote
 CANNEN_BACKEND = settings.CANNEN_BACKEND
 
 def get():
@@ -44,7 +45,7 @@ class SongInfo(object):
         self.time = time
         self.elapsed = elapsed
         if not title:
-            self.title = unicode(model)
+            self.title = unquote(unicode(model))
 
 class CannenBackend(object):
     # play the first song in the queue
