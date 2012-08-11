@@ -23,6 +23,21 @@ Requirements
  * Icecast (for streaming your radio station)
  * pyftpdlib (>= 0.7.0, for the FTP upload server)
 
+Demo Project
+------------
+
+Cannen comes with a demonstration Django project in `demo/` that you
+can use to quickly see Cannen in action. Inside that directory, run
+
+~~~~
+python manage.py syncdb
+python manage.py runserver
+~~~~
+
+to create a test database and start up a Django test server at
+`localhost:8000`. To run a demo player that "plays" each song for 10
+seconds, run `python manage.py runcannen` in another terminal.
+
 Installation
 ------------
 

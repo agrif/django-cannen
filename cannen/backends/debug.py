@@ -18,7 +18,7 @@ from ..backend import CannenBackend, SongInfo
 from django.core.files.storage import FileSystemStorage
 
 class DebugBackend(CannenBackend):
-    def __init__(self, delay = 5):
+    def __init__(self, delay = 10):
         self.out = sys.stdout
         self.delay = delay
         self.is_playing = False
