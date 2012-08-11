@@ -23,6 +23,46 @@ import backend
 
 UPLOAD_TO = "uploaded/"
 
+# mixin for orderable models (like UserSong)
+class Orderable(models.Model):
+    orderable_position = models.IntegerField(blank=True, null=True)
+    
+    class Meta:
+        abstract = True
+        ordering = ('orderable_position',)
+    
+    def save(self, *args, **kwargs):
+        if not self.orderable_position:
+            m = self.__class__.objects.aggregate(models.Max('orderable_position'))
+            try:
+                self.orderable_position = m['orderable_position__max'] + 1
+            except TypeError:
+                self.orderable_position = 1
+        return super(Orderable, self).save(*args, **kwargs)
+    
+    def swap_with(self, to_swap):
+        tmp = self.orderable_position
+        self.orderable_position = to_swap.orderable_position
+        to_swap.orderable_position = tmp
+        self.save()
+        to_swap.save()
+    
+    def move_up(self):
+        to_swap = self.orderable_position - 1
+        try:
+            to_swap = self.__class__.objects.get(orderable_position=to_swap)
+            self.swap_with(to_swap)
+        except self.__class__.DoesNotExist:
+            pass
+        
+    def move_down(self):
+        to_swap = self.orderable_position + 1
+        try:
+            to_swap = self.__class__.objects.get(orderable_position=to_swap)
+            self.swap_with(to_swap)
+        except self.__class__.DoesNotExist:
+            pass
+
 # model for files uploaded
 class SongFile(models.Model):
     owner = models.ForeignKey(User)
@@ -48,13 +88,10 @@ def unregister_uploaded(sender, **kwargs):
     backend.get().unregister_uploaded(unquote(url))
 
 # for user-local queues
-class UserSong(models.Model):
+class UserSong(Orderable):
     owner = models.ForeignKey(User)
     url = models.CharField(max_length=200)
     file = models.ForeignKey(SongFile, null=True, blank=True)
-    
-    class Meta:
-        ordering = ['id']
     
     def __unicode__(self):
         return self.url.rsplit('/')[-1]
