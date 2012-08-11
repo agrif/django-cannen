@@ -86,6 +86,16 @@ h1
 	margin-bottom: 0;
 }
 
+.context-container .context
+{
+	display: none;
+}
+
+.context-container:hover .context
+{
+	display: inline;
+}
+
 .context > :link
 {
 	color: #bbb;

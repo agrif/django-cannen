@@ -48,16 +48,16 @@
   {% if queue %}
   <ul>
 	{% for song in queue %}
-	<li>
+	<li class="context-container">
+	  <span class="title">{{ song.title }}</span>
+	  {% if song.artist %}
+	  <span class="subtitle">by {{ song.artist }}</span>
+	  {% endif %}
 	  <span class="context">
 		<a href="{% url 'cannen.views.delete' song.model.id %}" class="asynclink">X</a>
 		<a href="{% url 'cannen.views.move_up' song.model.id %}" class="asynclink">^</a>
 		<a href="{% url 'cannen.views.move_down' song.model.id %}" class="asynclink">v</a>
 	  </span>
-	  <span class="title">{{ song.title }}</span>
-	  {% if song.artist %}
-	  <span class="subtitle">by {{ song.artist }}</span>
-	  {% endif %}
 	</li>
 	{% endfor %}
   </ul>
