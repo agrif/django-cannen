@@ -1,2 +1,3 @@
 /dist
+/django_cannen.egg-info
 *.pyc

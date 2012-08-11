@@ -20,12 +20,13 @@ import cannen
 setup(name='django-cannen',
       version=cannen.__version__,
       description='a django collaborative music frontend for MPD',
+      long_description=open('README.md').read(),
       author=cannen.__author__,
       author_email=cannen.__email__,
       license=cannen.__license__,
       url=cannen.__url__,
       
-      packages=find_packages(),
+      packages=find_packages(exclude=['demo']),
       include_package_data=True,
       zip_safe=False,
       
