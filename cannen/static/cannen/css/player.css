@@ -79,8 +79,50 @@ h1
 	margin-top: 10em;
 }
 
+#add > h2
+{
+	font-size: 1.2em;
+	margin-top: 0.8em;
+	margin-bottom: 0;
+}
+
 .context > :link
 {
 	color: #bbb;
 	text-decoration: none;
+}
+
+#uploads
+{
+	margin-left: 5%;
+	margin-right: 5%;
+	margin-top: 2em;
+}
+
+.upload > .progress
+{
+	border: 1px solid #bbb;
+	border-radius: 6px;
+	padding: 2px;
+}
+
+.upload > .progress > .bar
+{
+	height: 1em;
+	border-radius: 4px;
+	background: #888;
+}
+
+.upload > .name
+{
+	font-weight: bold;
+	margin-left: 2px;
+	color: #666;
+}
+
+.upload > .status
+{
+	text-align: right;
+	font-size: 0.8em;
+	color: #888;
 }

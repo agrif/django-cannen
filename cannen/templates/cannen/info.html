@@ -1,56 +1,56 @@
 <div id="current">
-{% if current %}
-<div class="title">
-{{ current.title }}
-</div>
-{% if current.artist %}
-<div class="subtitle">
-by {{ current.artist }}
-</div>
-{% endif %}
-<div class="suggested">
-submitted by <strong>{{ current.model.submitter.username }}</strong>
-</div>
-{% if current.time %}
-<div class="time">
-time: {{ current.elapsed }} / {{ current.time }}
-</div>
-{% endif %}
-{% else %}
-<div class="title">
-nothing is playing
-</div>
-<div class="subtitle">
-what a shame
-</div>
-<div class="suggested">
-(use the controls below to suggest your own music)
-</div>
-{% endif %}
+  {% if current %}
+  <div class="title">
+	{{ current.title }}
+  </div>
+  {% if current.artist %}
+  <div class="subtitle">
+	by {{ current.artist }}
+  </div>
+  {% endif %}
+  <div class="suggested">
+	submitted by <strong>{{ current.model.submitter.username }}</strong>
+  </div>
+  {% if current.time %}
+  <div class="time">
+	time: {{ current.elapsed }} / {{ current.time }}
+  </div>
+  {% endif %}
+  {% else %}
+  <div class="title">
+	nothing is playing
+  </div>
+  <div class="subtitle">
+	what a shame
+  </div>
+  <div class="suggested">
+	(use the controls below to suggest your own music)
+  </div>
+  {% endif %}
 </div>
 
 <div id="playlist">
-<h2>Coming Up:</h2>
-{% if playlist %}
-<ul>
-{% for song in playlist %}
-<li><span class="title">{{ song.title }}</span>{% if song.artist %} <span class="subtitle">by {{ song.artist }}</span>{% endif %} <span class="suggested">({{song.model.submitter.username}})</span></li>
-{% endfor %}
-</ul>
-{% else %}
-there's no more music! use the controls below to remedy this situation!
-{% endif %}
+  <h2>Coming Up:</h2>
+  {% if playlist %}
+  <ul>
+	{% for song in playlist %}
+	<li><span class="title">{{ song.title }}</span>{% if song.artist %} <span class="subtitle">by {{ song.artist }}</span>{% endif %} <span class="suggested">({{song.model.submitter.username}})</span></li>
+	{% endfor %}
+  </ul>
+  {% else %}
+  there's no more music! use the controls below to remedy this situation!
+  {% endif %}
 </div>
 
 <div id="queue">
-<h2>Your Queue:</h2>
-{% if queue %}
-<ul>
-{% for song in queue %}
-<li><span class="context"><a href="{% url cannen.views.delete song.model.id %}" class="asynclink">X</a></span> <span class="title">{{ song.title }}</span>{% if song.artist %} <span class="subtitle">by {{ song.artist }}</span>{% endif %}</li>
-{% endfor %}
-</ul>
-{% else %}
-add songs here for them to be automatically added when it's your turn
-{% endif %}
+  <h2>Your Queue:</h2>
+  {% if queue %}
+  <ul>
+	{% for song in queue %}
+	<li><span class="context"><a href="{% url cannen.views.delete song.model.id %}" class="asynclink">X</a></span> <span class="title">{{ song.title }}</span>{% if song.artist %} <span class="subtitle">by {{ song.artist }}</span>{% endif %}</li>
+	{% endfor %}
+  </ul>
+  {% else %}
+  add songs here for them to be automatically added when it's your turn
+  {% endif %}
 </div>
