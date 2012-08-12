@@ -136,3 +136,9 @@ h1
 	font-size: 0.8em;
 	color: #888;
 }
+
+#sortable li:hover {
+    background-color: #efefef;
+    cursor: move;
+}
+

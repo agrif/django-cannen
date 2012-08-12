@@ -43,23 +43,66 @@
   {% endif %}
 </div>
 
+<style>
+#sortable li:hover {cursor: move;}
+</style>
+
+<script>
+function loadQueue() {
+    var list = $( "#sortable" );
+    if (list == null) return
+    var cookie = $.cookie( "queueOrder" );
+    if (!cookie) return;
+    var IDs = cookie.split(",");
+    var items = list.sortable( "toArray" );
+    var rebuild = new Array();
+    for ( var v=0, len=items.length; v<len; v++ ){
+            rebuild[items[v]] = items[v];
+    }
+    for (var i = 0, n = IDs.length; i < n; i++) {
+            var itemID = IDs[i];
+            if (itemID in rebuild) {
+                    var item = rebuild[itemID];
+                    var child = $( "ul.ui-sortable" ).children( "#" + item);
+                    var savedQueue = $( "ul.ui-sortable" ).children( "#" + itemID);
+                    child.remove();
+                    $(" ul.ui-sortable" ).filter( ":first" ).append(savedQueue);
+            }
+    }
+}
+
+function saveQueue() {
+    $.cookie( "queueOrder", $( "#sortable" ).sortable( "toArray" ), { expires: 1, path: "/" });
+}
+    
+$(function() {
+    $( "#sortable" ).sortable({
+        axis: "y",
+        cursor: "move",
+        update: function() { saveQueue(); }
+    });
+    $( "#sortable" ).disableSelection();
+    loadQueue();
+});
+</script>
+
 <div id="queue">
   <h2>Your Queue:</h2>
   {% if queue %}
-  <ul>
-	{% for song in queue %}
-	<li class="context-container">
-	  <span class="title">{{ song.title }}</span>
-	  {% if song.artist %}
-	  <span class="subtitle">by {{ song.artist }}</span>
-	  {% endif %}
-	  <span class="context">
-		<a href="{% url 'cannen.views.delete' song.model.id %}" class="asynclink">X</a>
-		<a href="{% url 'cannen.views.move_up' song.model.id %}" class="asynclink">^</a>
-		<a href="{% url 'cannen.views.move_down' song.model.id %}" class="asynclink">v</a>
-	  </span>
-	</li>
-	{% endfor %}
+  <ul id="sortable">
+    {% for song in queue %}
+    <li class="context-container" id="queue-{{ song.model.id }}">
+      <span class="title">{{ song.title }}</span>
+      {% if song.artist %}
+      <span class="subtitle">by {{ song.artist }}</span>
+      {% endif %}
+      <span class="context">
+        <a href="{% url 'cannen.views.delete' song.model.id %}" class="asynclink">X</a>
+        <a href="{% url 'cannen.views.move_up' song.model.id %}" class="asynclink">^</a>
+        <a href="{% url 'cannen.views.move_down' song.model.id %}" class="asynclink">v</a>
+      </span>
+    </li>
+    {% endfor %}      
   </ul>
   {% else %}
   add songs here for them to be automatically added when it's your turn

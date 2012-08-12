@@ -5,14 +5,16 @@
 	<meta charset="UTF-8"/>
 	
 	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}cannen/css/player.css"/>
-	
-	<script type="text/javascript" src="{{ STATIC_URL }}cannen/js/jquery.min.js"></script>
-	<script type="text/javascript" src="{{ STATIC_URL }}cannen/js/jquery.ui.widget.js"></script>
-	<script type="text/javascript" src="{{ STATIC_URL }}cannen/js/jquery.iframe-transport.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}cannen/css/ui-lightness/jquery-ui-1.8.22.custom.css"/>
+    
+    <script type="text/javascript" src="{{ STATIC_URL }}cannen/js/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}cannen/js/jquery-ui-1.8.22.custom.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}cannen/js/jquery.iframe-transport.js"></script>
 	<script type="text/javascript" src="{{ STATIC_URL }}cannen/js/jquery.fileupload.js"></script>
 	
 	<script type="text/javascript" src="{{ STATIC_URL }}cannen/js/player.js"></script>
-	<script type="text/javascript">
+    <script type="text/javascript" src="{{ STATIC_URL }}cannen/js/jquery.cookie.js"></script> 
+    <script type="text/javascript">
 	  function add_upload()
 	  {
 		  var main = $('<div class="upload"></div>');
@@ -22,8 +24,8 @@
 		  var status = $('<div class="status"></div>').appendTo(main);
 		  main.appendTo($('#uploads'));
 		  return {main: main, name: name, progress: progress, status: status};
-	  }
-	</script>
+      }
+    </script>
   </head>
 
   <body>
