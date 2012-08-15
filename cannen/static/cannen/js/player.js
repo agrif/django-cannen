@@ -19,17 +19,44 @@ function refresh()
 								);
 							}
 						);
-
+						
+						$("#sortable").sortable({
+							axis: "y",
+							cursor: "move",
+							start: stop_info_refresh,
+							stop: start_info_refresh,
+							update: function() { saveQueue(); }
+						});
+						$("#sortable").disableSelection();
+						loadQueue();
 					}
-	);
+				   );
+}
+
+// helpers for enabling / disabling refresh
+var info_refresh = null;
+function start_info_refresh()
+{
+	if (info_refresh == null)
+	{
+		refresh();
+		info_refresh = setInterval(refresh, 2500);
+	}
+}
+function stop_info_refresh()
+{
+	if (info_refresh != null)
+	{
+		clearInterval(info_refresh);
+		info_refresh = null;
+	}
 }
 
 $(document).ready(
 	function (event)
 	{
 		// refresh info often
-		refresh();
-		var auto_refresh = setInterval(refresh, 2500); // every 2.5 seconds
+		start_info_refresh();
 		
 		// handle async forms ajax-like
 		$('form.asyncform').submit(

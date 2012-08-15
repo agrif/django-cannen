@@ -74,16 +74,6 @@ function loadQueue() {
 function saveQueue() {
     $.cookie( "queueOrder", $( "#sortable" ).sortable( "toArray" ), { expires: 1, path: "/" });
 }
-    
-$(function() {
-    $( "#sortable" ).sortable({
-        axis: "y",
-        cursor: "move",
-        update: function() { saveQueue(); }
-    });
-    $( "#sortable" ).disableSelection();
-    loadQueue();
-});
 </script>
 
 <div id="queue">
