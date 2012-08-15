@@ -20,15 +20,40 @@ function refresh()
 							}
 						);
 						
+						var sortable_context = null;
 						$("#sortable").sortable({
 							axis: "y",
 							cursor: "move",
-							start: stop_info_refresh,
-							stop: start_info_refresh,
-							update: function() { saveQueue(); }
+							start: function (event, ui)
+							{
+								// turn off updates
+								stop_info_refresh();
+								
+								var el = ui.item[0];
+								sortable_context = $(el.parentElement.children).index(el);
+							},
+							stop: function (event, ui)
+							{								
+								var el = ui.item[0];
+								var start = sortable_context;
+								var end = $(el.parentElement.children).index(el);
+								var diff = end - start;
+								var id = el.id.split('-')[1];
+								
+								if (diff != 0)
+								{
+									url = move_song_url(id, diff);
+									$.get(url, function(data)
+										  {
+											  refresh();
+										  }
+										 );
+								}
+								// turn on updates
+								start_info_refresh();
+							},
 						});
 						$("#sortable").disableSelection();
-						loadQueue();
 					}
 				   );
 }

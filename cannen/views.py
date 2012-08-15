@@ -54,19 +54,12 @@ def delete(request, songid):
     return HttpResponseRedirect(reverse('cannen.views.index'))
 
 @login_required
-def move_up(request, songid):
+def move(request, songid, dest):
+    dest = int(dest)
     song = get_object_or_404(UserSong, pk=songid)
     if song.owner.id != request.user.id:
         raise PermissionDenied()
-    song.move_up()
-    return HttpResponseRedirect(reverse('cannen.views.index'))
-
-@login_required
-def move_down(request, songid):
-    song = get_object_or_404(UserSong, pk=songid)
-    if song.owner.id != request.user.id:
-        raise PermissionDenied()
-    song.move_down()
+    song.move_relative(dest)
     return HttpResponseRedirect(reverse('cannen.views.index'))
 
 @login_required

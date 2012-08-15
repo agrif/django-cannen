@@ -13,7 +13,6 @@
 	<script type="text/javascript" src="{{ STATIC_URL }}cannen/js/jquery.fileupload.js"></script>
 	
 	<script type="text/javascript" src="{{ STATIC_URL }}cannen/js/player.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}cannen/js/jquery.cookie.js"></script> 
     <script type="text/javascript">
 	  function add_upload()
 	  {
@@ -25,6 +24,11 @@
 		  main.appendTo($('#uploads'));
 		  return {main: main, name: name, progress: progress, status: status};
       }
+	  
+	  function move_song_url(id, dest)
+	  {
+		  return "{% url 'cannen.views.move' '112233' '445566' %}".replace("112233", id).replace("445566", dest);
+	  }
     </script>
   </head>
 
