@@ -113,3 +113,9 @@ you need to give people a way to log in at all, so if you're setting
 this up yourself you might want to create a few simple log in and
 registration pages for people to use. Check out the Django
 documentation for more details.
+
+### Extra Settings
+
+By default, Cannen will delete uploaded files as soon as they are
+played. If you do not wish for this to happen, set
+`CANNEN_GARBAGE_COLLECT` to `False` in your settings file.

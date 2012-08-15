@@ -17,6 +17,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save, pre_delete, post_delete
 from django.dispatch import receiver
+from django.conf import settings
 from urllib import unquote
 
 import backend
@@ -69,6 +70,10 @@ class SongFile(models.Model):
     file = models.FileField(upload_to=UPLOAD_TO, storage=backend.get().get_storage())
     
     def garbage_collect(self):
+        do_garbage_collect = getattr(settings, 'CANNEN_GARBAGE_COLLECT', True)
+        if not do_garbage_collect:
+            return
+        
         if self.globalsong_set.count() > 0 or self.usersong_set.count() > 0:
             return
         # we're no longer needed, so delete!
