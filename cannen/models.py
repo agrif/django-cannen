@@ -49,20 +49,35 @@ class Orderable(models.Model):
         to_swap.save()
     
     def move_up(self):
+        """Returns true if successfull, false if it cannot move up any more."""
         to_swap = self.orderable_position - 1
         try:
             to_swap = self.__class__.objects.get(orderable_position=to_swap)
             self.swap_with(to_swap)
+            return True
         except self.__class__.DoesNotExist:
-            pass
+            return False
         
     def move_down(self):
+        """Returns true if successfull, false if it cannot move down any more."""
         to_swap = self.orderable_position + 1
         try:
             to_swap = self.__class__.objects.get(orderable_position=to_swap)
             self.swap_with(to_swap)
+            return True
         except self.__class__.DoesNotExist:
-            pass
+            return False
+    
+    def move_relative(self, dest):
+        """Dest is how many spaces to move. Positive is down."""
+        while dest > 0:
+            if not self.move_down():
+                return
+            dest -= 1
+        while dest < 0:
+            if not self.move_up():
+                return
+            dest += 1
 
 # model for files uploaded
 class SongFile(models.Model):

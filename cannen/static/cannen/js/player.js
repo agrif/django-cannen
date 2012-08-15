@@ -19,17 +19,69 @@ function refresh()
 								);
 							}
 						);
-
+						
+						var sortable_context = null;
+						$("#sortable").sortable({
+							axis: "y",
+							cursor: "move",
+							start: function (event, ui)
+							{
+								// turn off updates
+								stop_info_refresh();
+								
+								var el = ui.item[0];
+								sortable_context = $(el.parentElement.children).index(el);
+							},
+							stop: function (event, ui)
+							{								
+								var el = ui.item[0];
+								var start = sortable_context;
+								var end = $(el.parentElement.children).index(el);
+								var diff = end - start;
+								var id = el.id.split('-')[1];
+								
+								if (diff != 0)
+								{
+									url = move_song_url(id, diff);
+									$.get(url, function(data)
+										  {
+											  refresh();
+										  }
+										 );
+								}
+								// turn on updates
+								start_info_refresh();
+							},
+						});
+						$("#sortable").disableSelection();
 					}
-	);
+				   );
+}
+
+// helpers for enabling / disabling refresh
+var info_refresh = null;
+function start_info_refresh()
+{
+	if (info_refresh == null)
+	{
+		refresh();
+		info_refresh = setInterval(refresh, 2500);
+	}
+}
+function stop_info_refresh()
+{
+	if (info_refresh != null)
+	{
+		clearInterval(info_refresh);
+		info_refresh = null;
+	}
 }
 
 $(document).ready(
 	function (event)
 	{
 		// refresh info often
-		refresh();
-		var auto_refresh = setInterval(refresh, 2500); // every 2.5 seconds
+		start_info_refresh();
 		
 		// handle async forms ajax-like
 		$('form.asyncform').submit(
