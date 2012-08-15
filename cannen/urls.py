@@ -20,6 +20,8 @@ urlpatterns = patterns('cannen.views',
     url(r'^add/file$', 'add_file'),
     url(r'^delete/(\d+)$', 'delete'),
     url(r'move/(\d+)/([-+]?\d+)', 'move'),
+    url(r'^play/(.*)$', 'play'),
+    url(r'^library$', 'library'),
     url(r'^info$', 'info'),
     url(r'^$', 'index'),
 )

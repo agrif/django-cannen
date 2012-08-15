@@ -1,0 +1,46 @@
+{% load url from future %}
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta charset="UTF-8"/>
+	
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}cannen/css/player.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}cannen/css/ui-lightness/jquery-ui-1.8.22.custom.css"/>
+  </head>
+
+  <body>
+
+	<h1>
+	  Cannen Collaborative Music Player
+	  
+	  > <font color=black>Listen Now! 
+	  [<a href="http://radio.overviewer.org/writhem.mp3">mp3</a>]
+	  [<a href="http://radio.overviewer.org/writhem.mp3.m3u">m3u</a>]
+	  [<a href="http://radio.overviewer.org/writhem.mp3.xspf">xspf</a>]
+	  </font>
+	</h1>
+
+	<div id="library">
+	<a href="{% url 'cannen.views.index' %}" class="asynclink">&lt; Return Home</a>
+	<h2>Local Library:</h2>
+	  {% if library %}
+	  <ul>
+		{% for song in library %}
+		<li class="context-container" id="library-{{ song.model.id }}">
+		  <span class="title">{{ song.title }}</span>
+		  {% if song.artist %}
+		  <span class="subtitle">by {{ song.artist }}</span>
+		  {% endif %}
+		  <span class="context">
+			<a href="{% url 'cannen.views.play' song.model.file.url %}" class="asynclink">&#9654;</a>
+		  </span>
+		</li>
+		{% endfor %}  
+		</ul>
+	  {% else %}
+	  It seems nobody has uploaded any items to play. 
+	  {% endif %}
+	  
+	</div>
+  </body>
+</html>

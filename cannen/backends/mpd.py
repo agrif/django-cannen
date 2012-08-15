@@ -113,16 +113,25 @@ class MPDBackend(CannenBackend):
                     in_idle = False
                 # and signal we're not playing
                 on_next_song(None)
-    def get_info(self, model):
+    def get_info(self, model, file=False):
         modeldat = None
         current = self.client.currentsong()
         current_status = self.client.status()
-        if current and current['file'] == model.url:
-            modeldat = current
-        try:
-            modeldat = self.client.listallinfo(model.url.encode('UTF-8'))[0]
-        except (mpd.CommandError, IndexError):
-            pass
+        if not file:
+            if current and current['file'] == model.url:
+                modeldat = current
+            try:
+                modeldat = self.client.listallinfo(model.url.encode('UTF-8'))[0]
+            except (mpd.CommandError, IndexError):
+                pass
+        else:
+            if current and current['file'] == model.file.url:
+                modeldat = current
+            try:
+                modeldat = self.client.listallinfo(model.file.url.encode('UTF-8'))[0]
+            except (mpd.CommandError, IndexError):
+                pass
+
 
         if modeldat:
             title = modeldat.get('title')
