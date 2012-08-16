@@ -119,6 +119,7 @@
           {% if song.artist %}
           <span class="subtitle">by {{ song.artist }}</span>
           {% endif %}
+		  &nbsp;<span class="label">{{song.model.owner}}</span>
         </li>
 	    {% endfor %}  
       </ul>
