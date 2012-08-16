@@ -61,7 +61,7 @@ body
 	font-size: 1.4em;
 }
 
-#personal-queue
+#personal-queue, #library > ul
 {
 	border-left: 1px solid #ccc;
 	margin-left: -1px;

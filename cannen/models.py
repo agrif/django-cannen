@@ -94,6 +94,10 @@ class SongFile(models.Model):
         # we're no longer needed, so delete!
         self.delete()
 
+    def __unicode__(self):
+        return self.file.url.rsplit('/')[-1]
+
+
 @receiver(post_save, sender=SongFile)
 def register_uploaded(sender, **kwargs):
     if kwargs['created']:

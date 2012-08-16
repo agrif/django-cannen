@@ -1,0 +1,122 @@
+{% load url from future %}
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta charset="UTF-8"/>
+
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}cannen/css/bootstrap.min.css"/>
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}cannen/css/player.css"/>
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}cannen/css/bootstrap-responsive.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}cannen/css/ui-lightness/jquery-ui-1.8.22.custom.css"/>
+	
+  <script type="text/javascript" src="{{ STATIC_URL }}cannen/js/jquery-1.7.2.min.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}cannen/js/bootstrap.min.js"></script>
+  <script>
+
+(function ($) {
+  // custom css expression for a case-insensitive contains()
+  jQuery.expr[':'].Contains = function(a,i,m){
+      return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase())>=0;
+  };
+
+
+  function listFilter(header, list) { // header is any element, list is an unordered list
+    // create and add the filter form to the header
+    var form = $("<form>").attr({"class":"filterform","action":"#"}),
+        input = $("<input>").attr({"class":"filterinput","type":"text"});
+    $(form).append(input).appendTo(header);
+
+    $(input).change( function () {
+        var filter = $(this).val();
+        if(filter) {
+          // this finds all links in a list that contain the input,
+          // and hide the ones not containing the input while showing the ones that do
+          $(list).find("li").find("span:not(:contains(" + filter + "))").parent().hide();
+          $(list).find("li").find("span:contains(" + filter + ")").parent().show();        
+		  } else {
+          $(list).find("li").slideDown();
+        }
+        return false;
+      })
+    .keyup( function () {
+        // fire the above change event after every letter
+        $(this).change();
+    });
+  }
+
+
+  //ondomready
+  $(function () {
+    listFilter($("#header"), $("#list"));
+  });
+}(jQuery));
+
+  </script>
+	
+  </head>
+
+  <body>
+
+	<div class="navbar navbar-fixed-top">
+	  <div class="navbar-inner">
+		<div class="container">
+		  <!-- this amounts to a header -->
+		  <a class="brand" href="{% url 'cannen.views.index' %}">
+			{% if title %}
+			{{ title }}
+			{% else %}
+			Cannen Collaborative Music Player
+			{% endif %}
+		  </a>
+		  
+		  <!-- useful bits on the right -->
+		  <ul class="nav pull-right">
+			<!-- stream menu -->
+			{% if listen_urls %}
+			{% if listen_urls|length > 1 %}
+			<li class="dropdown">
+			  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+				<i class="icon-headphones icon-white"></i> Listen
+				<b class="caret"></b>
+			  </a>
+			  <ul class="dropdown-menu">
+				{% for name, url in listen_urls %}
+				<li><a href="{{ url }}">{{ name }}</a></li>
+				{% endfor %}
+			  </ul>
+			</li>
+			{% else %}
+			<li><a href="{{ listen_urls.0.1 }}">
+				<i class="icon-headphones icon-white"></i> Listen
+			</a></li>
+			{% endif %}
+			{% endif %}
+		  </ul>
+		  
+		</div>
+	  </div>
+	</div>
+	
+	<div id="library">
+	<h2 id="header">Local Library:</h2>
+	  {% if library %}
+	  <ul id="list">
+		{% for song in library %}
+		<li class="context-container" id="library-{{ song.model.id }}">
+		  <span class="subtitle">{{ song.title }}</span>
+		  {% if song.artist %}
+		  <span class="title">by {{ song.artist }}</span>
+		  {% endif %}
+		  <span class="context">
+			<a href="{% url 'cannen.views.play' song.model.file.url %}">&#9654;</a>
+		  </span>
+		</li>
+		{% endfor %}  
+		</ul>
+	  {% else %}
+	  It seems nobody has uploaded any items to play. 
+	  {% endif %}
+	  
+	</div>
+  </body>
+</html>

@@ -42,14 +42,35 @@ def info(request):
     except IndexError:
         now_playing = None
     playlist = GlobalSong.objects.filter(is_playing=False)
-    userqueue = UserSong.objects.filter(owner=request.user)
     playlist = [CANNEN_BACKEND.get_info(m) for m in playlist]
+
+    userqueue = UserSong.objects.filter(owner=request.user)
     userqueue = [CANNEN_BACKEND.get_info(m) for m in userqueue]
 
-    data = dict(current=now_playing, playlist=playlist, queue=userqueue)
+    songfiles = SongFile.objects.filter(owner=request.user)
+    userlibrary = [CANNEN_BACKEND.get_info(Song,True) for Song in songfiles]
+    userlibrary.sort(key=lambda x: (x.artist, x.title))
+
+
+    data = dict(current=now_playing, playlist=playlist, queue=userqueue, library=userlibrary)
     return render_to_response('cannen/info.html', data,
                               context_instance=RequestContext(request))
 
+@login_required
+def library(request):
+    title = getattr(settings, "CANNEN_TITLE", None)
+    listen_urls = getattr(settings, "CANNEN_LISTEN_URLS", [])
+	
+    CANNEN_BACKEND = backend.get()
+    Songs = SongFile.objects.all()
+	
+    library = [CANNEN_BACKEND.get_info(Song,True) for Song in Songs]
+    library.sort(key=lambda x: (x.artist, x.title))
+
+    data = dict(title=title, listen_urls=listen_urls, library=library)
+    return render_to_response('cannen/library.html', data,
+                              context_instance=RequestContext(request))
+							  							  
 @login_required
 def delete(request, songid):
     song = get_object_or_404(UserSong, pk=songid)
@@ -80,4 +101,11 @@ def add_file(request):
     if request.POST.get and 'file' in request.POST and request.POST['file'] == '':
         return HttpResponseRedirect(reverse('cannen.views.index'))
     add_song_and_file(request.user, request.FILES['file'])
+    return HttpResponseRedirect(reverse('cannen.views.index'))
+
+@login_required
+def play(request, url):
+    if url == '':
+        raise ValidationError("invalid track")
+    UserSong(owner=request.user, url=url).save()
     return HttpResponseRedirect(reverse('cannen.views.index'))
