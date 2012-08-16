@@ -22,8 +22,6 @@ from urllib import unquote
 
 import backend
 
-UPLOAD_TO = "uploaded/"
-
 # mixin for orderable models (like UserSong)
 class Orderable(models.Model):
     orderable_position = models.IntegerField(blank=True, null=True)
@@ -82,6 +80,7 @@ class Orderable(models.Model):
 # model for files uploaded
 class SongFile(models.Model):
     owner = models.ForeignKey(User)
+    UPLOAD_TO = getattr(settings, 'CANNEN_UPLOAD_DIR', 'uploaded/')
     file = models.FileField(upload_to=UPLOAD_TO, storage=backend.get().get_storage())
     
     def garbage_collect(self):

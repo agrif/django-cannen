@@ -81,6 +81,12 @@ body
 	cursor: move;
 }
 
+#not-sortable > li:hover
+{
+	background-color: rgba(80%, 80%, 80%, 0.4);
+	border-radius: 0.5em;
+}
+
 .context-container .context
 {
 	opacity: 0;

@@ -49,7 +49,7 @@ def info(request):
 
     songfiles = SongFile.objects.filter(owner=request.user)
     userlibrary = [CANNEN_BACKEND.get_info(Song,True) for Song in songfiles]
-    userlibrary.sort(key=lambda x: (x.artist, x.title))
+    userlibrary.sort(key=lambda x: (x.artist.lower().lstrip('the ') if x.artist else x.artist, x.title))
 
 
     data = dict(current=now_playing, playlist=playlist, queue=userqueue, library=userlibrary)
@@ -65,9 +65,12 @@ def library(request):
     Songs = SongFile.objects.all()
 	
     library = [CANNEN_BACKEND.get_info(Song,True) for Song in Songs]
-    library.sort(key=lambda x: (x.artist, x.title))
+    library.sort(key=lambda x: (x.artist.lower().lstrip('the ') if x.artist else x.artist, x.title))
+	
+    userqueue = UserSong.objects.filter(owner=request.user)
+    userqueue = [CANNEN_BACKEND.get_info(m) for m in userqueue]
 
-    data = dict(title=title, listen_urls=listen_urls, library=library)
+    data = dict(title=title, listen_urls=listen_urls, queue=userqueue, library=library)
     return render_to_response('cannen/library.html', data,
                               context_instance=RequestContext(request))
 							  							  

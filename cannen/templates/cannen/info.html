@@ -81,22 +81,27 @@
 </div>
 
 <div id="library">
-<h2>Your Library: | <a href={% url 'cannen.views.library' %}>View All</a></h2>
+	<ul class="nav nav-list">
+  	  <li class="nav-header">
+		Your Library <a href={% url 'cannen.views.library' %}>View All</a>
+	  </li>
+	</ul>
   {% if library %}
-  <ul>
+  <ul id="not-sortable" class="nav nav-list">
     {% for song in library %}
     <li class="context-container" id="library-{{ song.model.id }}">
-      <span class="title">{{ song.title }}</span>
+      <span class="context">
+        <a href="{% url 'cannen.views.play' song.model.file.url %}" class="asynclink"><i class="icon-play"></i></a>
+      </span>      
+	  <span class="title">{{ song.title }}</span>
       {% if song.artist %}
       <span class="subtitle">by {{ song.artist }}</span>
       {% endif %}
-      <span class="context">
-        <a href="{% url 'cannen.views.play' song.model.file.url %}" class="asynclink">&#9654;</a>
-      </span>
+
     </li>
     {% endfor %}  
   {% else %}
-  there is nothing in the user Library, but uploading items will add them to your local user Library, so get to it!
+  There is nothing in the user Library, but uploading items will add them to your local user Library, so get to it!
   {% endif %}
 	</ul>
 </div>
