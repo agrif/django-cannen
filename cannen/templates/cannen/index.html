@@ -105,7 +105,7 @@
 		<form id="fileupload" action="{% url 'cannen.views.add_file' %}" method="post" enctype="multipart/form-data" class="form-inline pull-right">
           {% csrf_token %}
           <div class="input-prepend">
-            <span class="add-on"><b class="icon-plus-sign"></b></span>
+            <span class="add-on"><b class="icon-upload"></b></span>
             <input id="realfile" type="file" name="file" placeholder="Local File..." style="display:none"/>
           </div>
           <input type="button" class="btn" value="Choose File" onclick="$('input[id=realfile]').click();"/>
