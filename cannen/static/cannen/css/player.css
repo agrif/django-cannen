@@ -1,26 +1,10 @@
 body
 {
-	font-family: Helvetica,Arial,sans-serif;
-	background-color: #fff;
-	color: #000;
-}
-
-h1
-{
-	font-size: 0.8em;
-	color: #ccc;
-	font-weight: normal;
-}
-
-#current
-{
-	margin: 15px;
-	font-size: 2.0em;
+	padding-top: 60px;
 }
 
 .title
 {
-	font-size: 1.5em;
 	font-weight: bold;
 }
 
@@ -29,116 +13,114 @@ h1
 	font-style: italic;
 }
 
-.time, .suggested
-{
-	font-size: 0.7em;
-	padding-top: 0.3em;
-}
-
-#playlist, #queue
-{
-	width: 35%;
-	margin-top: 2em;
-	border-left: 2px solid #aaa;
-}
-
-#add, #playlist, #queue
-{
-	color: #666;
-	font-size: 0.8em;
-	margin-left: 5%;
-	margin-right: 5%;
-	padding-left: 1.5em;
-}
-
-#playlist
-{
-	float: left;
-}
-
-#queue
-{
-	float: right;
-}
-
-#playlist > h2, #queue > h2
-{
-	font-size: 1.0em;
-}
-
-#playlist > ul, #queue > ul
-{
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-}
-
-#add
-{
-	clear: both;
-	margin-top: 10em;
-}
-
-#add > h2
-{
-	font-size: 1.2em;
-	margin-top: 0.8em;
-	margin-bottom: 0;
-}
-
-.context-container .context
-{
-	display: none;
-}
-
-.context-container:hover .context
+.form-inline
 {
 	display: inline;
 }
 
-.context > :link
+#current
 {
-	color: #bbb;
-	text-decoration: none;
+	font-weight: bold;
+}
+
+#current > .title
+{
+	font-size: 4em;
+	line-height: 1em;
+}
+
+#current > .subtitle
+{
+	font-size: 2.5em;
+	line-height: 1em;
+}
+
+#main-queue
+{
+	font-size: 1.2em;
+	color: #666;
+	margin-bottom: 1em;
+}
+
+#main-queue > h2
+{
+	color: #888;
+	margin-top: -10px;
+	margin-bottom: 10px;
+	font-variant: small-caps;
+}
+
+#main-queue > ul
+{
+	margin-left: 1em;
+	color: #222;
+}
+
+#main-queue .title
+{
+	font-size: 1.4em;
+}
+
+#personal-queue
+{
+	border-left: 1px solid #ccc;
+	margin-left: -1px;
+	padding-bottom: 5px;
+}
+
+#personal-queue > p
+{
+	color: #666;
+	padding-left: 1em;
+}
+
+#sortable > li:hover
+{
+	background-color: rgba(80%, 80%, 80%, 0.4);
+	border-radius: 0.5em;
+	cursor: move;
+}
+
+.context-container .context
+{
+	opacity: 0;
+}
+
+.context-container:hover .context
+{
+	opacity: 1.0;
+}
+
+#add
+{
+	padding-bottom: 2em;
+}
+
+#add > form
+{
+	margin-left: 4em;
+}
+
+#add > h2
+{
+	font-size: 1em;
+	display: inline;
+	padding-right: 1em;
 }
 
 #uploads
 {
-	margin-left: 5%;
-	margin-right: 5%;
-	margin-top: 2em;
+	clear: both;
 }
 
-.upload > .progress
+.upload
 {
-	border: 1px solid #bbb;
-	border-radius: 6px;
-	padding: 2px;
-}
-
-.upload > .progress > .bar
-{
-	height: 1em;
-	border-radius: 4px;
-	background: #888;
-}
-
-.upload > .name
-{
-	font-weight: bold;
-	margin-left: 2px;
-	color: #666;
-}
-
-.upload > .status
-{
-	text-align: right;
-	font-size: 0.8em;
 	color: #888;
 }
 
-#sortable li:hover {
-    background-color: #efefef;
-    cursor: move;
+.upload .name
+{
+	color: #444;
+	font-weight: bold;
+	font-size: 1.4em;
 }
-

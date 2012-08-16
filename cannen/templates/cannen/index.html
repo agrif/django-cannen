@@ -1,25 +1,31 @@
 {% load url from future %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
 	<meta charset="UTF-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}cannen/css/bootstrap.min.css"/>
 	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}cannen/css/player.css"/>
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}cannen/css/bootstrap-responsive.min.css"/>
     
     <script type="text/javascript" src="{{ STATIC_URL }}cannen/js/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}cannen/js/jquery-ui-1.8.22.custom.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}cannen/js/jquery.iframe-transport.js"></script>
 	<script type="text/javascript" src="{{ STATIC_URL }}cannen/js/jquery.fileupload.js"></script>
+
+	<script type="text/javascript" src="{{ STATIC_URL }}cannen/js/bootstrap.min.js"></script>
 	
 	<script type="text/javascript" src="{{ STATIC_URL }}cannen/js/player.js"></script>
     <script type="text/javascript">
 	  function add_upload()
 	  {
 		  var main = $('<div class="upload"></div>');
+		  var status = $('<div class="status pull-right"></div>').appendTo(main);
 		  var name = $('<div class="name"></div>').appendTo(main);
-		  $('<div class="progress"><div class="bar" style="width: 0%;"></div></div>').appendTo(main);
+		  $('<div class="progress progress-striped active"><div class="bar" style="width: 0%;"></div></div>').appendTo(main);
 		  var progress = main.children('.progress').children('.bar');
-		  var status = $('<div class="status"></div>').appendTo(main);
+		  
 		  main.appendTo($('#uploads'));
 		  return {main: main, name: name, progress: progress, status: status};
       }
@@ -32,35 +38,76 @@
   </head>
 
   <body>
-
-	<h1>Cannen Collaborative Music Player</h1>
-
-	<div id="info">
-	</div>
-
-	<div id="add">
-	  <h2>Upload File</h2>
-	  <form id="fileupload" action="{% url 'cannen.views.add_file' %}" method="post" enctype="multipart/form-data">
-		{% csrf_token %}
-		<input type="file" name="file" placeholder="Local File..."/>
-		<input id="fileuploadsubmit" type="submit" value="Add"/>
-	  </form>
-
-	  <h2>Add URL</h2>
-	  <form action="{% url 'cannen.views.add_url' %}" method="post" class="asyncform">
-		{% csrf_token %}
-		<input type="text" name="url" placeholder="URL..."/>
-		<input type="submit" value="Add"/>
-	  </form>
-	</div>
 	
-	<div id="uploads">
-	  <!-- upload bars will end up here -->
-	  <!-- <div class="upload">
-		<div class="name">filename.mp3</div>
-		<div class="progress"><div class="bar" style="width: 75%;"></div></div>
-		<div class="status">75%</div>
-	  </div> -->
+	<!-- navbar -->
+	<div class="navbar navbar-fixed-top">
+	  <div class="navbar-inner">
+		<div class="container">
+		  <!-- this amounts to a header -->
+		  <a class="brand" href="#">
+			Cannen Collaborative Music Player
+		  </a>
+		  
+		  <!-- useful bits on the right -->
+		  <ul class="nav pull-right">
+			<!-- stream menu -->
+			<li class="dropdown">
+			  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+				<i class="icon-headphones icon-white"></i> Listen <b class="caret"></b>
+			  </a>
+			  <ul class="dropdown-menu">
+				<li><a href="#">MP3</a></li>
+				<li><a href="#">Vorbis</a></li>
+			  </ul>
+			</li>
+			
+		  </ul>
+		</div>
+	  </div>
+	</div>
+
+	<div class="container">
+	  
+	  <!-- the /info page is refreshed here -->
+	  <div id="info">
+	  </div>
+	  
+	  <hr/>
+	  
+	  <!-- add controls -->
+	  <div id="add">
+		<h2>
+		  <i class="icon-plus-sign"></i>
+		  Add
+		</h2>
+		
+		<!-- url add -->
+		<form action="{% url 'cannen.views.add_url' %}" method="post" class="asyncform form-inline pull-right">
+		  {% csrf_token %}
+		  <div class="input-prepend">
+			<span class="add-on"><b class="icon-globe"></b></span>
+			<input type="text" name="url" placeholder="URL..."/>
+		  </div>
+		  <input type="submit" class="btn" value="Add"/>
+		</form>
+
+		<!-- file upload -->
+		<form id="fileupload" action="{% url 'cannen.views.add_file' %}" method="post" enctype="multipart/form-data" class="form-inline pull-right">
+		  {% csrf_token %}
+		  <input type="file" name="file" placeholder="Local File..."/>
+		  <input id="fileuploadsubmit" type="submit" class="btn" value="Add"/>
+		</form>
+	  </div>
+	  
+	  <div id="uploads">
+		<!-- upload bars will end up here -->
+		<!--<div class="upload">
+			<div class="status pull-right">75%</div>
+			<div class="name">filename.mp3</div>
+			<div class="progress progress-striped active"><div class="bar" style="width: 75%;"></div></div>
+		</div>-->
+	  </div>
+	  
 	</div>
 
   </body>
