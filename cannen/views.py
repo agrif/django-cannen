@@ -19,13 +19,18 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.core.exceptions import PermissionDenied, ValidationError
 from django.template import RequestContext
+from django.conf import settings
 
 import backend
 from .models import UserSong, GlobalSong, SongFile, add_song_and_file
 
 @login_required
 def index(request):
-    return render_to_response('cannen/index.html', {},
+    title = getattr(settings, "CANNEN_TITLE", None)
+    listen_urls = getattr(settings, "CANNEN_LISTEN_URLS", [])
+    
+    data = dict(title=title, listen_urls=listen_urls)
+    return render_to_response('cannen/index.html', data,
                               context_instance=RequestContext(request))
 
 @login_required

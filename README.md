@@ -119,3 +119,16 @@ documentation for more details.
 By default, Cannen will delete uploaded files as soon as they are
 played. If you do not wish for this to happen, set
 `CANNEN_GARBAGE_COLLECT` to `False` in your settings file.
+
+If you are running an Icecast stream, you can set the
+`CANNEN_LISTEN_URLS` setting to a list of `(name, url)` tuples to show
+on the default template. For example,
+
+~~~~{.py}
+CANNEN_LISTEN_URLS = [
+    ('MP3', '/streams/radio.mp3'),
+	('Vorbis', '/streams/radio.ogg'),
+]
+~~~~
+
+You can also set the title on the default template with `CANNEN_TITLE`.

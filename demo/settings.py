@@ -88,6 +88,13 @@ INSTALLED_APPS = (
 #CANNEN_BACKEND = ('cannen.backends.mpd.MPDBackend', 'localhost', 6600, project_path('mpd/music'))
 CANNEN_BACKEND = ('cannen.backends.debug.DebugBackend',)
 
+# optional for cannen
+CANNEN_TITLE = "Cannen Demo"
+CANNEN_LISTEN_URLS = [
+    ('MP3', '#mp3'),
+    ('OGG', '#ogg'),
+]
+
 #
 # Useful login stuff to support cannen
 #

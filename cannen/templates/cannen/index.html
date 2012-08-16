@@ -45,23 +45,37 @@
 		<div class="container">
 		  <!-- this amounts to a header -->
 		  <a class="brand" href="#">
+			{% if title %}
+			{{ title }}
+			{% else %}
 			Cannen Collaborative Music Player
+			{% endif %}
 		  </a>
 		  
 		  <!-- useful bits on the right -->
 		  <ul class="nav pull-right">
 			<!-- stream menu -->
+			{% if listen_urls %}
+			{% if listen_urls|length > 1 %}
 			<li class="dropdown">
 			  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-				<i class="icon-headphones icon-white"></i> Listen <b class="caret"></b>
+				<i class="icon-headphones icon-white"></i> Listen
+				<b class="caret"></b>
 			  </a>
 			  <ul class="dropdown-menu">
-				<li><a href="#">MP3</a></li>
-				<li><a href="#">Vorbis</a></li>
+				{% for name, url in listen_urls %}
+				<li><a href="{{ url }}">{{ name }}</a></li>
+				{% endfor %}
 			  </ul>
 			</li>
-			
+			{% else %}
+			<li><a href="{{ listen_urls.0.1 }}">
+				<i class="icon-headphones icon-white"></i> Listen
+			</a></li>
+			{% endif %}
+			{% endif %}
 		  </ul>
+		  
 		</div>
 	  </div>
 	</div>
