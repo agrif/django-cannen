@@ -54,7 +54,7 @@ def info(request):
     #if the library is enabled, then prepare the data and pass it to the template
     if enable_library:
         songfiles = SongFile.objects.filter(owner=request.user)
-        userlibrary = [CANNEN_BACKEND.get_info(Song,True) for Song in songfiles]
+        userlibrary = [CANNEN_BACKEND.get_info(Song) for Song in songfiles]
         userlibrary.sort(key=lambda x: (x.artist.lower().lstrip('the ') if x.artist else x.artist, x.title))
         data = dict(current=now_playing, playlist=playlist, queue=userqueue, library=userlibrary, enable_library=enable_library)
 
@@ -78,7 +78,7 @@ def library(request):
 
     #if the library is enabled, prepare and pass the data
     if enable_library:
-        library = [CANNEN_BACKEND.get_info(Song,True) for Song in Songs]
+        library = [CANNEN_BACKEND.get_info(Song) for Song in Songs]
         library.sort(key=lambda x: (x.artist.lower().lstrip('the ') if x.artist else x.artist, x.title))
         data = dict(title=title, listen_urls=listen_urls, queue=userqueue, library=library, enable_library=enable_library)
 	

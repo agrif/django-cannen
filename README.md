@@ -120,11 +120,14 @@ By default, Cannen will delete uploaded files as soon as they are
 played. If you do not wish for this to happen, set
 `CANNEN_GARBAGE_COLLECT` to `False` in your settings file.
 
-By default, Cannen also has a library feature which is disable. To 
-enable this feature, set
-`CANNEN_ENABLE_LIBRARY` to `True` in your settings file. To get 
-the most out of your Library experience, you'll likely want to disable
-the Garbase Collector as well, as listed directly above.
+Cannen also has a library feature which, by default, is disabled. To
+enable this feature, set `CANNEN_ENABLE_LIBRARY` to `True` in your
+settings file. To get the most out of your Library experience, you'll
+likely want to disable the garbage collector as well, as listed
+directly above.
+
+If you want to store your uploaded songs somewhere other than
+`uploaded/`, you can change this by setting `CANNEN_UPLOAD_DIR`.
 
 If you are running an Icecast stream, you can set the
 `CANNEN_LISTEN_URLS` setting to a list of `(name, url)` tuples to show

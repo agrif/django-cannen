@@ -80,8 +80,12 @@ class Orderable(models.Model):
 # model for files uploaded
 class SongFile(models.Model):
     owner = models.ForeignKey(User)
-    UPLOAD_TO = getattr(settings, 'CANNEN_UPLOAD_DIR', 'uploaded/')
-    file = models.FileField(upload_to=UPLOAD_TO, storage=backend.get().get_storage())
+    file = models.FileField(upload_to=getattr(settings, 'CANNEN_UPLOAD_DIR', 'uploaded/'),
+                            storage=backend.get().get_storage())
+    
+    @property
+    def url(self):
+        return self.file.url
     
     def garbage_collect(self):
         do_garbage_collect = getattr(settings, 'CANNEN_GARBAGE_COLLECT', True)
