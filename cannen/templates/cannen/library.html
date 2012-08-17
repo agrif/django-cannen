@@ -11,6 +11,7 @@
 	
   <script type="text/javascript" src="{{ STATIC_URL }}cannen/js/jquery-1.7.2.min.js"></script>
   <script type="text/javascript" src="{{ STATIC_URL }}cannen/js/bootstrap.min.js"></script>
+  {% if enable_library %}
   <script>
 
 (function ($) {
@@ -55,6 +56,7 @@
 }(jQuery));
 
   </script>
+  {% endif %}
   <title>
     {% if title %}
     {{ title }}
@@ -106,58 +108,59 @@
 	  </div>
 	</div>
 	
-    <div class="container">
-
-    <div id="library">
-	  <ul class="nav nav-list">
-  	    <li id="header" class="nav-header">
-		  Local Library
-	    </li>
-	  </ul>
-      {% if library %}
-      <ul id="not-sortable" class="nav nav-list">
-        {% for song in library %}
-        <li class="context-container" id="library-{{ song.model.id }}">
+  <div class="container">
+    <div class="span8" id="library">
+      <ul class="nav nav-list">
+          <li id="header" class="nav-header">
+        Local Library
+        </li>
+      </ul>
+        {% if library and enable_library %}
+        <ul id="not-sortable" class="nav nav-list">
+          {% for song in library %}
+          <li class="context-container" id="library-{{ song.model.id }}">
+            <span class="context">
+              <a href="{% url 'cannen.views.play' song.model.file.url %}" class="asynclink"><i class="icon-play"></i></a>
+            </span>      
+          <span class="title">{{ song.title }}</span>
+            {% if song.artist %}
+            <span class="subtitle">by {{ song.artist }}</span>
+            {% endif %}
+        &nbsp;<span class="label">{{song.model.owner}}</span>
+          </li>
+        {% endfor %}  
+      {% elif not enable_library %}
+      <p>Awe bummer! The library is currently disabled. If you head back to the main page you can still queue up some music by uploading though.</p>
+      {% else %}
+      <p>It seems nobody has uploaded any items to play.</p>
+      {% endif %}         
+      </ul>
+    </div>
+	
+    <p>&nbsp;</p>	
+    <div class="span4" id="personal-queue">
+      <ul class="nav nav-list">
+          <li class="nav-header">
+          Your Queue
+        </li>
+      </ul>
+      {% if queue %}
+      <ul id="sortable" class="nav nav-list">
+        {% for song in queue %}
+        <li class="context-container" id="queue-{{ song.model.id }}">
           <span class="context">
-            <a href="{% url 'cannen.views.play' song.model.file.url %}" class="asynclink"><i class="icon-play"></i></a>
-          </span>      
-	      <span class="title">{{ song.title }}</span>
+                <a href="{% url 'cannen.views.delete' song.model.id %}" class="asynclink"><i class="icon-remove"></i></a>
+          </span>
+          <span class="title">{{ song.title }}</span>
           {% if song.artist %}
           <span class="subtitle">by {{ song.artist }}</span>
           {% endif %}
-		  &nbsp;<span class="label">{{song.model.owner}}</span>
         </li>
-	    {% endfor %}  
+      {% endfor %}      
+      {% else %}
+      <p>add songs here for them to be automatically added when it's your turn</p>
+      {% endif %}
       </ul>
-	  {% else %}
-	  It seems nobody has uploaded any items to play. 
-	  {% endif %} 
-	</div>
-	
-	<p>&nbsp;</p>	
-	<div class="span4" id="personal-queue">
-	  <ul class="nav nav-list">
-  	    <li class="nav-header">
-	      Your Queue
-	    </li>
-	  </ul>
-	  {% if queue %}
-	  <ul id="sortable" class="nav nav-list">
-        {% for song in queue %}
-        <li class="context-container" id="queue-{{ song.model.id }}">
-		  <span class="context">
-            <a href="{% url 'cannen.views.delete' song.model.id %}" class="asynclink"><i class="icon-remove"></i></a>
-		  </span>
-		  <span class="title">{{ song.title }}</span>
-		  {% if song.artist %}
-		  <span class="subtitle">by {{ song.artist }}</span>
-		  {% endif %}
-        </li>
-        {% endfor %}      
-	  </ul>
-	  {% else %}
-	  <p>add songs here for them to be automatically added when it's your turn</p>
-	  {% endif %}
     </div>
   </div>
   </body>

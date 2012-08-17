@@ -36,6 +36,7 @@ def index(request):
 @login_required
 def info(request):
     CANNEN_BACKEND = backend.get()
+    enable_library = getattr(settings, 'CANNEN_ENABLE_LIBRARY', False)
     try:
         now_playing = GlobalSong.objects.filter(is_playing=True)[0]
         now_playing = CANNEN_BACKEND.get_info(now_playing)
@@ -47,12 +48,16 @@ def info(request):
     userqueue = UserSong.objects.filter(owner=request.user)
     userqueue = [CANNEN_BACKEND.get_info(m) for m in userqueue]
 
-    songfiles = SongFile.objects.filter(owner=request.user)
-    userlibrary = [CANNEN_BACKEND.get_info(Song,True) for Song in songfiles]
-    userlibrary.sort(key=lambda x: (x.artist.lower().lstrip('the ') if x.artist else x.artist, x.title))
+    #return the default values without library
+    data = dict(current=now_playing, playlist=playlist, queue=userqueue, enable_library=enable_library)
+    
+    #if the library is enabled, then prepare the data and pass it to the template
+    if enable_library:
+        songfiles = SongFile.objects.filter(owner=request.user)
+        userlibrary = [CANNEN_BACKEND.get_info(Song,True) for Song in songfiles]
+        userlibrary.sort(key=lambda x: (x.artist.lower().lstrip('the ') if x.artist else x.artist, x.title))
+        data = dict(current=now_playing, playlist=playlist, queue=userqueue, library=userlibrary, enable_library=enable_library)
 
-
-    data = dict(current=now_playing, playlist=playlist, queue=userqueue, library=userlibrary)
     return render_to_response('cannen/info.html', data,
                               context_instance=RequestContext(request))
 
@@ -60,17 +65,23 @@ def info(request):
 def library(request):
     title = getattr(settings, "CANNEN_TITLE", None)
     listen_urls = getattr(settings, "CANNEN_LISTEN_URLS", [])
+    enable_library = getattr(settings, 'CANNEN_ENABLE_LIBRARY', False)
 	
     CANNEN_BACKEND = backend.get()
     Songs = SongFile.objects.all()
 	
-    library = [CANNEN_BACKEND.get_info(Song,True) for Song in Songs]
-    library.sort(key=lambda x: (x.artist.lower().lstrip('the ') if x.artist else x.artist, x.title))
-	
     userqueue = UserSong.objects.filter(owner=request.user)
     userqueue = [CANNEN_BACKEND.get_info(m) for m in userqueue]
+    
+    #return data without library info in it... as default
+    data = dict(title=title, listen_urls=listen_urls, queue=userqueue, enable_library=enable_library)
 
-    data = dict(title=title, listen_urls=listen_urls, queue=userqueue, library=library)
+    #if the library is enabled, prepare and pass the data
+    if enable_library:
+        library = [CANNEN_BACKEND.get_info(Song,True) for Song in Songs]
+        library.sort(key=lambda x: (x.artist.lower().lstrip('the ') if x.artist else x.artist, x.title))
+        data = dict(title=title, listen_urls=listen_urls, queue=userqueue, library=library, enable_library=enable_library)
+	
     return render_to_response('cannen/library.html', data,
                               context_instance=RequestContext(request))
 							  							  

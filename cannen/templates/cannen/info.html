@@ -2,106 +2,119 @@
 <div class="row">
   <div class="span12">
 	<!-- now playing -->
-	<div class="hero-unit" id="current">
-	  {% if current %}
-	  <div class="title">
-		{{ current.title }}
-	  </div>
-	  {% if current.artist %}
-	  <div class="subtitle">
-		by {{ current.artist }}
-	  </div>
-	  {% endif %}
-	  <div class="suggested">
-		queued by <span class="label">{{ current.model.submitter.username }}</span>
-	  </div>
-	  {% if current.time %}
-	  <div class="time">
-		time: {{ current.elapsed }} / {{ current.time }}
-	  </div>
-	  {% endif %}
-	  {% else %}
-	  <div class="title">
-		nothing is playing
-	  </div>
-	  <div class="subtitle">
-		what a shame
-	  </div>
-	  <div class="suggested">
-		(use the controls below to suggest your own music)
-	  </div>
-	  {% endif %}
-	</div>
+    <div class="hero-unit" id="current">
+      {% if current %}
+      <div class="title">
+        {{ current.title }}
+      </div>
+      {% if current.artist %}
+      <div class="subtitle">
+        by {{ current.artist }}
+      </div>
+      {% endif %}
+      <div class="suggested">
+        queued by <span class="label">{{ current.model.submitter.username }}</span>
+      </div>
+      {% if current.time %}
+      <div class="time">
+        time: {{ current.elapsed }} / {{ current.time }}
+      </div>
+      {% endif %}
+      {% else %}
+      <div class="title">
+        nothing is playing
+      </div>
+      <div class="subtitle">
+        what a shame
+      </div>
+      <div class="suggested">
+        (use the controls below to suggest your own music)
+      </div>
+      {% endif %}
+    </div>
   </div>
 </div>
 
 <div class="row">
   <!-- the queues -->
   <div class="span8" id="main-queue">
-	<h2>coming up</h2>
-	{% if playlist %}
-	<ul class="unstyled">
-	  {% for song in playlist %}
-	  <li><span class="title">{{ song.title }}</span>{% if song.artist %} <span class="subtitle">by {{ song.artist }}</span>{% endif %} <span class="label">{{song.model.submitter.username}}</span></li>
-	  {% endfor %}
-	</ul>
-	{% else %}
-	there's no more music! use the controls below to remedy this situation!
-	{% endif %}
+    <h2>coming up</h2>
+    {% if playlist %}
+    <ul class="unstyled">
+      {% for song in playlist %}
+      <li>
+        <span class="title">{{ song.title }}</span>
+        {% if song.artist %} 
+        <span class="subtitle">by {{ song.artist }}</span>
+        {% endif %} 
+        <span class="label">{{song.model.submitter.username}}</span>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    there's no more music! use the controls below to remedy this situation!
+    {% endif %}
   </div>
-
+  
+  {% if enable_library %}
+  <div class="span8" id="library">
+    <ul class="nav nav-list">
+      <li class="nav-header">
+        Your Library <a href={% url 'cannen.views.library' %}>View All</a>
+      </li>
+    </ul>
+    {% if library %}
+    <ul id="not-sortable" class="nav nav-list">
+      {% for song in library %}
+      <li class="context-container" id="library-{{ song.model.id }}">
+        <span class="context">
+          <a href="{% url 'cannen.views.play' song.model.file.url %}" class="asynclink">
+            <i class="icon-play"></i>
+          </a>
+        </span>      
+        <span class="title">{{ song.title }}</span>
+        {% if song.artist %}
+        <span class="subtitle">by {{ song.artist }}</span>
+        {% endif %}
+      </li>
+      {% endfor %}  
+    </ul>    
+    {% else %}
+    <p>There is nothing in the user Library, but uploading items will add them to your local user Library, so get to it!</p>
+    {% endif %}
+  </div>
+  {% endif %}
+  
   <div class="span4" id="personal-queue">
-	<ul class="nav nav-list">
-  	  <li class="nav-header">
-		Your Queue
-	  </li>
-	</ul>
-	{% if queue %}
-	<ul id="sortable" class="nav nav-list">
+    <ul class="nav nav-list">
+      <li class="nav-header">
+        Your Queue
+      </li>
+    </ul>
+    {% if queue %}
+    <ul id="sortable" class="nav nav-list">
       {% for song in queue %}
       <li class="context-container" id="queue-{{ song.model.id }}">
-		<span class="context">
-          <a href="{% url 'cannen.views.delete' song.model.id %}" class="asynclink"><i class="icon-remove"></i></a>
+        <span class="context">
+          <a href="{% url 'cannen.views.delete' song.model.id %}" class="asynclink">
+            <i class="icon-remove"></i>
+          </a>
           <!-- unused movement
-			   <a href="{% url 'cannen.views.move' song.model.id -1 %}" class="asynclink">^</a>
-			   <a href="{% url 'cannen.views.move' song.model.id +1 %}" class="asynclink">v</a>
-			   -->
-		</span>
-		<span class="title">{{ song.title }}</span>
-		{% if song.artist %}
-		<span class="subtitle">by {{ song.artist }}</span>
-		{% endif %}
+            <a href="{% url 'cannen.views.move' song.model.id -1 %}" class="asynclink">^</a>
+            <a href="{% url 'cannen.views.move' song.model.id +1 %}" class="asynclink">v</a>
+          -->
+        </span>
+        <span class="title">{{ song.title }}</span>
+        {% if song.artist %}
+        <span class="subtitle">by {{ song.artist }}</span>
+        {% endif %}
       </li>
       {% endfor %}      
-	</ul>
-	{% else %}
-	<p>add songs here for them to be automatically added when it's your turn</p>
-	{% endif %}
+    </ul>
+    {% else %}
+    <p>add songs here for them to be automatically added when it's your turn</p>
+    {% endif %}
   </div>
 </div>
 
-<div id="library">
-	<ul class="nav nav-list">
-  	  <li class="nav-header">
-		Your Library <a href={% url 'cannen.views.library' %}>View All</a>
-	  </li>
-	</ul>
-  {% if library %}
-  <ul id="not-sortable" class="nav nav-list">
-    {% for song in library %}
-    <li class="context-container" id="library-{{ song.model.id }}">
-      <span class="context">
-        <a href="{% url 'cannen.views.play' song.model.file.url %}" class="asynclink"><i class="icon-play"></i></a>
-      </span>      
-	  <span class="title">{{ song.title }}</span>
-      {% if song.artist %}
-      <span class="subtitle">by {{ song.artist }}</span>
-      {% endif %}
 
-    </li>
-    {% endfor %}  
-  {% else %}
-  There is nothing in the user Library, but uploading items will add them to your local user Library, so get to it!
-  {% endif %}
-	</ul>
-</div>
