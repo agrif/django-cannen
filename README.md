@@ -114,30 +114,36 @@ this up yourself you might want to create a few simple log in and
 registration pages for people to use. Check out the Django
 documentation for more details.
 
-### Extra Settings
+### Other Settings
 
-By default, Cannen will delete uploaded files as soon as they are
-played. If you do not wish for this to happen, set
-`CANNEN_GARBAGE_COLLECT` to `False` in your settings file.
+CANNEN_GARBAGE_COLLECT 
+:   By default, Cannen will delete uploaded files as soon as they are
+    played. If you do not wish for this to happen, set
+    `CANNEN_GARBAGE_COLLECT` to `False` in your settings file.
 
-Cannen also has a library feature which, by default, is disabled. To
-enable this feature, set `CANNEN_ENABLE_LIBRARY` to `True` in your
-settings file. To get the most out of your Library experience, you'll
-likely want to disable the garbage collector as well, as listed
-directly above.
+CANNEN_ENABLE_LIBRARY
+:   Cannen also has a library feature which, by default, is
+    disabled. To enable this feature, set `CANNEN_ENABLE_LIBRARY` to
+    `True` in your settings file. To get the most out of your Library
+    experience, you'll likely want to disable the garbage collector as
+    well, as listed directly above.
 
-If you want to store your uploaded songs somewhere other than
-`uploaded/`, you can change this by setting `CANNEN_UPLOAD_DIR`.
+CANNEN_UPLOAD_DIR
+:   If you want to store your uploaded songs somewhere other than
+    `uploaded/`, you can change this by setting `CANNEN_UPLOAD_DIR`.
 
-If you are running an Icecast stream, you can set the
-`CANNEN_LISTEN_URLS` setting to a list of `(name, url)` tuples to show
-on the default template. For example,
+CANNEN_LISTEN_URLS
+:   If you are running an Icecast stream, you can set the
+    `CANNEN_LISTEN_URLS` setting to a list of `(name, url)` tuples to
+    show on the default template. For example,
 
-~~~~{.py}
-CANNEN_LISTEN_URLS = [
-    ('MP3', '/streams/radio.mp3'),
-	('Vorbis', '/streams/radio.ogg'),
-]
-~~~~
+    ~~~~{.py}
+    CANNEN_LISTEN_URLS = [
+        ('MP3', '/streams/radio.mp3'),
+        ('Vorbis', '/streams/radio.ogg'),
+    ]
+    ~~~~
 
-You can also set the title on the default template with `CANNEN_TITLE`.
+CANNEN_TITLE
+:   You can also set the title on the default template with
+    `CANNEN_TITLE`.
