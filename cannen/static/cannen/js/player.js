@@ -77,6 +77,16 @@ function stop_info_refresh()
 	}
 }
 
+// functions to avoid leaving the page while uploading... confirm with the user. called by the upload functions.
+function enableBeforeUnload() {
+    window.onbeforeunload = function (e) {
+      return "A song appears to still be uploading, leaving while this file is upload will cancel your upload.";
+    };
+}
+function disableBeforeUnload() {
+    window.onbeforeunload = null;
+}      
+
 $(document).ready(
 	function (event)
 	{
@@ -123,8 +133,10 @@ $(document).ready(
 				progress: function (e, data)
 				{
 					var progress = parseInt(data.loaded / data.total * 100, 10);
-					if (data.context.progress)
+					if (data.context.progress){
 						data.context.progress.animate({width: progress + '%'});
+						enableBeforeUnload();
+                        }
 					if (data.context.status)
 						data.context.status.text(progress + '%');
 				},
@@ -132,8 +144,10 @@ $(document).ready(
 				{
 					if (data.context.status)
 						data.context.status.text('done');
-					if (data.context.main)
+					if (data.context.main) {
 						data.context.main.fadeOut(1000, function() { $(this).remove(); });
+						disableBeforeUnload();
+                        }
 					refresh();
 				},
 			}
