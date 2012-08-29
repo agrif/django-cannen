@@ -26,11 +26,25 @@
                 // this finds all links in a list that contain the input,
                 // and hide the ones not containing the input while showing the ones that do
                 var items = $(list).find("li");
-                var matches = items.find("span").filter(function(idx)
-                { return ($(this).text() || $(this).textContent || $(this).innerText || "").toUpperCase().indexOf(filter.toUpperCase()) >= 0;}).parent();
+                var matches = items.find("span").filter(function(idx) {
+                    return ($(this).text() || $(this).textContent || $(this).innerText || "").toUpperCase().indexOf(filter.toUpperCase()) >= 0;
+                }).parent();
+                var invisibleMatches = matches.filter(":not(:visible)");
+
                 var misses = items.find("span").parent().not(matches);
-                misses.slideUp();
-                matches.slideDown();
+                var visibleMisses = misses.filter(":visible");
+
+                var tooManyToSlide = 50;
+                if(visibleMisses.length > tooManyToSlide){
+                    visibleMisses.hide();
+                } else {
+                    visibleMisses.slideUp();
+                }
+                if(invisibleMatches.length > tooManyToSlide){
+                    invisibleMatches.show();
+                } else {
+                    invisibleMatches.slideDown();
+                }
               } else {
                 $(list).find("li").slideDown();
               }
