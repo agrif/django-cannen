@@ -14,11 +14,6 @@
     {% if enable_library %}
     <script>
       (function ($) {
-        // custom css expression for a case-insensitive contains()
-        jQuery.expr[':'].Contains = function(a,i,m){
-          return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase())>=0;
-        };
-
         function listFilter(header, list) { // header is any element, list is an unordered list
           // create and add the filter form to the header
           var form = $("<form>").attr({"class":"filterform","action":"#"}),
@@ -31,7 +26,8 @@
                 // this finds all links in a list that contain the input,
                 // and hide the ones not containing the input while showing the ones that do
                 var items = $(list).find("li");
-                var matches = items.find("span:Contains(" + filter + ")").parent();
+                var matches = items.find("span").filter(function(idx)
+                { return ($(this).text() || $(this).textContent || $(this).innerText || "").toUpperCase().indexOf(filter.toUpperCase()) >= 0;}).parent();
                 var misses = items.find("span").parent().not(matches);
                 misses.slideUp();
                 matches.slideDown();
