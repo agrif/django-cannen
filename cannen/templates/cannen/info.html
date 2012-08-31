@@ -4,10 +4,20 @@
 	<!-- now playing -->
     <div class="hero-unit" id="current">
       {% if current %}
+      <script type="text/javascript">
+        $(document).ready(function() {
+          document.title = '{{ current.title }}';
+        });
+      </script>
       <div class="title">
         {{ current.title }}
       </div>
       {% if current.artist %}
+      <script type="text/javascript">
+        $(document).ready(function() {
+          document.title = document.title + ' - {{ current.artist }}';
+        });
+      </script>
       <div class="subtitle">
         by {{ current.artist }}
       </div>
@@ -16,11 +26,22 @@
         queued by <span class="label">{{ current.model.submitter.username }}</span>
       </div>
       {% if current.time %}
+      <script type="text/javascript">
+        $(document).ready(function() {
+          document.title = document.title + ' ({{ current.elapsed }} / {{ current.time }})';
+        });
+      </script>
+
       <div class="time">
         time: {{ current.elapsed }} / {{ current.time }}
       </div>
       {% endif %}
       {% else %}
+      <script type="text/javascript">
+        $(document).ready(function() {
+          document.title = 'nothing is playing';
+        });
+      </script>
       <div class="title">
         nothing is playing
       </div>
