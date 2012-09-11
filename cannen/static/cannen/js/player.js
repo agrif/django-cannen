@@ -132,13 +132,15 @@ $(document).ready(
 				},
 				progress: function (e, data)
 				{
-					var progress = parseInt(data.loaded / data.total * 100, 10);
+					var intProgress = parseInt(data.loaded / data.total * 100, 10);
 					if (data.context.progress){
-						data.context.progress.animate({width: progress + '%'});
+						//query 1.8 currently has a bug in it, commented out until jquery-core is fixed and updated.
+						//data.context.progress.animate({width: intProgress + '%'});
+						data.context.progress.css('width', intProgress + '%');
 						enableBeforeUnload();
                         }
 					if (data.context.status)
-						data.context.status.text(progress + '%');
+						data.context.status.text(intProgress + '%');
 				},
 				always: function (e, data)
 				{
